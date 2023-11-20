@@ -17,7 +17,8 @@ def run_colmap(basedir, match_type):
         'colmap', 'feature_extractor', 
             '--database_path', os.path.join(basedir, 'database.db'), 
             '--image_path', os.path.join(basedir, 'images'),
-            '--ImageReader.single_camera', '1'
+            '--ImageReader.single_camera', '1',
+            '--SiftExtraction.use_gpu','1' 
     ]
     feat_output = ( subprocess.check_output(feature_extractor_args, universal_newlines=True) )
     logfile.write(feat_output)
@@ -25,7 +26,8 @@ def run_colmap(basedir, match_type):
 
     exhaustive_matcher_args = [
         'colmap', match_type, 
-            '--database_path', os.path.join(basedir, 'database.db'), 
+            '--database_path', os.path.join(basedir, 'database.db'),
+            '--SiftMatching.use_gpu', '1' 
     ]
 
     match_output = ( subprocess.check_output(exhaustive_matcher_args, universal_newlines=True) )
@@ -83,3 +85,4 @@ if __name__=='__main__':
         print('ERROR: matcher type ' + args.match_type + ' is not valid.  Aborting')
         sys.exit()    
     gen_poses(args.scenedir, args.match_type)
+
